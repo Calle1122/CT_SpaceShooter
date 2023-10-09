@@ -215,6 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1535997752}
+  - component: {fileID: 1535997753}
   m_Layer: 0
   m_Name: Space
   m_TagString: Untagged
@@ -237,6 +238,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1535997753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535997751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab283a6430ef499f823a77f5285def89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpaceDimensions:
+    x: 22.5
+    y: 22.5
+  NumberOfSpawners: 50
+  SpawnerPrefab: {fileID: 8156721242494146494, guid: c7630133b31bfb94b92b5e8cf5757568, type: 3}
+  RandomSeed: 50
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
