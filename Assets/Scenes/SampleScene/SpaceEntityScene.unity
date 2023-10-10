@@ -253,9 +253,11 @@ MonoBehaviour:
   SpaceDimensions:
     x: 22.5
     y: 22.5
-  NumberOfSpawners: 50
+  NumberOfSpawners: 75
   SpawnerPrefab: {fileID: 8156721242494146494, guid: c7630133b31bfb94b92b5e8cf5757568, type: 3}
-  RandomSeed: 50
+  RandomSeed: 1000
+  EnemyPrefab: {fileID: 7696479343478883550, guid: 857abd58cfe70eb48b0457d7ff9b6aba, type: 3}
+  EnemySpawnRate: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

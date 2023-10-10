@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using Unity.Collections;
+using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
 using UnityEngine;
@@ -10,13 +11,20 @@ namespace ComponentsAndTags
         public readonly Entity Entity;
 
         private readonly RefRO<LocalTransform> _localTransform;
-
+        private readonly RefRW<EnemySpawnPoints> _enemySpawnPoints;
         private readonly RefRO<SpaceProperties> _spaceProperties;
+        private readonly RefRW<EnemySpawnTimer> _enemySpawnTimer;
         private readonly RefRW<SpaceRandom> _spaceRandom;
 
         public int NumberOfSpawners => _spaceProperties.ValueRO.NumberOfSpawners;
         public Entity SpawnerPrefab => _spaceProperties.ValueRO.SpawnerPrefab;
 
+        public BlobArray<float3> EnemySpawnPoints
+        {
+            get => _enemySpawnPoints.ValueRO.Value.Value.Value;
+            set => _enemySpawnPoints.ValueRW.Value.Value.Value = value;
+        }
+        
         public LocalTransform GetRandomSpaceTransform()
         {
             return new LocalTransform
@@ -52,5 +60,22 @@ namespace ComponentsAndTags
 
         private quaternion GetRandomRotation() => quaternion.RotateY(_spaceRandom.ValueRW.Value.NextFloat(-0.25f, 0.25f));
         private float GetRandomScale(float min) => _spaceRandom.ValueRW.Value.NextFloat(min, 1f);
+
+        public float EnemySpawnTimer
+        {
+            get => _enemySpawnTimer.ValueRO.Value;
+            set => _enemySpawnTimer.ValueRW.Value = value;
+        }
+
+        public bool CanSpawnEnemy => EnemySpawnTimer <= 0f;
+        public float EnemySpawnRate => _spaceProperties.ValueRO.EnemySpawnRate;
+        public Entity EnemyPrefab => _spaceProperties.ValueRO.EnemyPrefab;
+
+        public bool EnemySpawnPointInitialized()
+        {
+            return _enemySpawnPoints.ValueRO.Value.IsCreated && EnemySpawnPointCount > 0;
+        }
+
+        private int EnemySpawnPointCount => _enemySpawnPoints.ValueRO.Value.Value.Value.Length;
     }
 }

@@ -12,22 +12,29 @@ namespace AuthoringAndMono
         public int NumberOfSpawners;
         public GameObject SpawnerPrefab;
         public uint RandomSeed;
+        public GameObject EnemyPrefab;
+        public float EnemySpawnRate;
     }
     
     public class SpaceBaker : Baker<SpaceMono>
     {
         public override void Bake(SpaceMono authoring)
         {
-            AddComponent(new SpaceProperties
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponent(entity, new SpaceProperties
             {
                 SpaceDimensions = authoring.SpaceDimensions,
                 NumberOfSpawners = authoring.NumberOfSpawners,
-                SpawnerPrefab = GetEntity(authoring.SpawnerPrefab)
+                SpawnerPrefab = GetEntity(authoring.SpawnerPrefab, TransformUsageFlags.Dynamic),
+                EnemyPrefab =  GetEntity(authoring.EnemyPrefab, TransformUsageFlags.Dynamic),
+                EnemySpawnRate = authoring.EnemySpawnRate
             });
-            AddComponent(new SpaceRandom
+            AddComponent(entity, new SpaceRandom
             {
                 Value = Random.CreateFromIndex(authoring.RandomSeed)
             });
+            AddComponent<EnemySpawnPoints>(entity);
+            AddComponent<EnemySpawnTimer>(entity);
         }
     }
 }
