@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
 using UnityEngine;
+using Utilities;
 
 namespace ComponentsAndTags
 {
@@ -70,6 +71,24 @@ namespace ComponentsAndTags
         public bool CanSpawnEnemy => EnemySpawnTimer <= 0f;
         public float EnemySpawnRate => _spaceProperties.ValueRO.EnemySpawnRate;
         public Entity EnemyPrefab => _spaceProperties.ValueRO.EnemyPrefab;
+
+        public LocalTransform GetEnemySpawnPoint()
+        {
+            var position = GetRandomEnemySpawnPoint();
+            return new LocalTransform
+            {
+                Position = position,
+                Rotation = quaternion.RotateY(MathHelper.GetHeading(position, _localTransform.ValueRO.Position)),
+                Scale = 1f
+            };
+        }
+
+        private float3 GetRandomEnemySpawnPoint()
+        {
+            return GetEnemySpawnPoint(_spaceRandom.ValueRW.Value.NextInt(EnemySpawnPointCount));
+        }
+
+        private float3 GetEnemySpawnPoint(int i) => _enemySpawnPoints.ValueRO.Value.Value.Value[i];
 
         public bool EnemySpawnPointInitialized()
         {

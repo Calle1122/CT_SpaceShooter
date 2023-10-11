@@ -1,6 +1,7 @@
 ﻿using ComponentsAndTags;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Transforms;
 using UnityEngine;
 
 namespace Systems
@@ -43,11 +44,15 @@ namespace Systems
             //Subtract enemy spawn timer and continue if timer reaches 0
             space.EnemySpawnTimer -= DeltaTime;
             if (!space.CanSpawnEnemy) return;
+            if (!space.EnemySpawnPointInitialized()) return;
 
             //Reset enemy spawn timer
             space.EnemySpawnTimer = space.EnemySpawnRate;
 
             var newEnemy = ECB.Instantiate(space.EnemyPrefab);
+
+            var newEnemyTransform = space.GetEnemySpawnPoint();
+            ECB.SetComponent(newEnemy, newEnemyTransform);
         }
     }
 }
